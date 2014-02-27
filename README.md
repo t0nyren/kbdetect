@@ -1,4 +1,4 @@
-welfare2
+kbdetect
 ========
 
-Web-level Face Recognition Version 2
+Kuaibo Facial Landmark Detection
