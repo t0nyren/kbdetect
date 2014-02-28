@@ -391,11 +391,11 @@ Mat Detector::detectNorm(string imgname){
 	
 	for (unsigned int i = 0; i < X.cols; i++){
 		//cout<<X.at<float>(0,i)<<" "<<X.at<float>(1,i)<<endl;
-		rotatePoint(frame_mat, angle, X.at<float>(0,i), X.at<float>(1,i), X.at<float>(0,i), X.at<float>(1,i));
+		//rotatePoint(frame_mat, angle, X.at<float>(0,i), X.at<float>(1,i), X.at<float>(0,i), X.at<float>(1,i));
 		//cout<<X.at<float>(0,i)<<" "<<X.at<float>(1,i)<<endl;
 		//cout<<"bbox: "<<minx<<" "<<miny<<" "<<maxx<<" "<<maxy<<endl;
 		//cout<<landmarks[i]<<" "<<landmarks[i+1]<<endl;
-		//circle(rotated, Point(landmarks[i], landmarks[i+1]), 2, Scalar(255,0,0));
+		circle(rotated, Point(X.at<float>(0,i), X.at<float>(1,i)), 2, Scalar(255,0,0));
 		if (X.at<float>(0,i)  < minx ){
 			minx = X.at<float>(0,i) ;
 		}
@@ -454,7 +454,7 @@ Mat Detector::detectNorm(string imgname){
 	gettimeofday(&end, NULL);	
     elapsed = (end.tv_sec - begin.tv_sec) + 
               ((end.tv_usec - begin.tv_usec)/1000000.0);
-	cout<<"Face aligned detected in "<<elapsed<<" seconds"<<endl;	
+	cout<<"Face aligned in "<<elapsed<<" seconds"<<endl;	
 	return resized;
 }
 
@@ -580,7 +580,7 @@ Mat Detector::detectNorm(const string filename, const float faceWidth, const flo
 		//cout<<X.at<float>(0,i)<<" "<<X.at<float>(1,i)<<endl;
 		//cout<<"bbox: "<<minx<<" "<<miny<<" "<<maxx<<" "<<maxy<<endl;
 		//cout<<landmarks[i]<<" "<<landmarks[i+1]<<endl;
-		//circle(rotated, Point(landmarks[i], landmarks[i+1]), 2, Scalar(255,0,0));
+		//circle(rotated, Point(landmarks.at<float>(0,i), landmarks.at<float>(1,i)), 2, Scalar(255,0,0));
 		if (landmarks.at<float>(0,i)  < minx ){
 			minx = landmarks.at<float>(0,i) ;
 		}
@@ -596,6 +596,7 @@ Mat Detector::detectNorm(const string filename, const float faceWidth, const flo
 			maxy = landmarks.at<float>(1,i);
 		}
 	}
+
 	//TODO: validate min max
 
 	//extend to rectangle
@@ -606,20 +607,20 @@ Mat Detector::detectNorm(const string filename, const float faceWidth, const flo
 		float region =  (maxx-minx)/whRatio -(maxy-miny);
 		miny -= region/2;
 		maxy += region/2;
-		
-		//extend scaled patch
-		float px = (maxx-minx)/(faceWidth-patchSize)*patchSize/2;
-		float py = (maxy-miny)/(faceHeight-patchSize)*patchSize/2;
-		maxx += px + 2;
-		minx -= px + 2;
-		maxy += py + 2;
-		miny -= py + 2;
 	}
 	else{
 		//fit height, extend width
-	
+		float region = (maxy - miny)*whRatio - (maxx-minx);
+		minx -= region/2;
+		maxx += region/2;
 	}
-	cout<<"bbox: "<<minx<<" "<<miny<<" "<<maxx<<" "<<maxy<<endl;
+	//extend scaled patch
+	float px = (maxx-minx)/(faceWidth-patchSize)*patchSize/2;
+	float py = (maxy-miny)/(faceHeight-patchSize)*patchSize/2;
+	maxx += px + 2;
+	minx -= px + 2;
+	maxy += py + 2;
+	miny -= py + 2;	
 	if (minx < 0 || miny < 0 || maxx > frame_mat.cols || maxy > frame_mat.rows){
 		cout<<"Bounding box out of bound: "<<minx<<" "<<miny<<" "<<maxx<<" "<<maxy<<endl;
 		return resized;
@@ -673,7 +674,7 @@ Mat Detector::detectNorm(const string filename, const float faceWidth, const flo
 	gettimeofday(&end, NULL);	
     elapsed = (end.tv_sec - begin.tv_sec) + 
               ((end.tv_usec - begin.tv_usec)/1000000.0);
-	cout<<"Face aligned detected in "<<elapsed<<" seconds"<<endl;	
+	cout<<"Face aligned in "<<elapsed<<" seconds"<<endl;	
 	return resized;
 }
 
@@ -692,8 +693,10 @@ void Detector::rotatePoint(const Mat& source, double angle, const double& x1, co
 	x = x1 - x0;
 	y = y1 - y0;
 	angle = angle * PI / 180;
-	x = x*cos(angle) - y*sin(angle);
-	y = x*sin(angle) + y*cos(angle);
+	double tx = x*cos(angle) - y*sin(angle);
+	double ty = x*sin(angle) + y*cos(angle);
+	x = tx;
+	y = ty;
 	x += x0;
 	y += y0;
 }
