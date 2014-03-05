@@ -275,6 +275,35 @@ Mat Detector::detect(const string imgname, Mat& landmarks, int* pose, int numLan
 	return frame_mat;
 }
 
+bool Detector::detect(const Mat& face, Mat& landmarks, int* pose, int numLandmarks){
+	//Face landmark detection
+	float score, notFace = 0.5;
+	Rect rect(0, 0, face.cols, face.rows);
+	INTRAFACE::HeadPose hp;
+
+	if (faceLandmark->Detect(face, rect, landmarks, score) == INTRAFACE::IF_OK)
+	{
+		faceLandmark->EstimateHeadPose(landmarks,hp);
+		for (int i = 0; i < 3; i++){
+			pose[i] = hp.angles[i];
+		}
+		// only draw valid faces
+		if (score >= notFace) {
+			//for (int i = 0 ; i < landmarks.cols ; i++)
+			//	cv::circle(frame_mat,cv::Point((int)landmarks.at<float>(0,i), (int)landmarks.at<float>(1,i)), 2, cv::Scalar(0,255,0), -1);
+		}
+		else{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+
+	return true;	
+}
+
 Mat Detector::detectNorm(string imgname){
 	Mat resized;
 	struct timeval begin, end;

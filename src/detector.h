@@ -25,11 +25,16 @@ class Detector{
 		//numLandmarks can be 5 or 49, landmark positions and poses (in the order of roll, yaw, pitch) are returned
 		Mat detect(const string imgname, Mat& landmarks, int* pose, int numLandmarks = 49);
 		
+		//marks an already detected face, return false if no face detected
+		bool detect(const Mat& face, Mat& landmarks, int* pose, int numLandmarks = 49);
+		
 		//align and normalize face to 100x100
 		Mat detectNorm(const string imgname); 
 	
 		//align and normalize face to width x height, output landmarks, no. of landmarks can be 5, 49
 		Mat detectNorm(const string imgname, const float width, const float height, const float patchSize, Mat& landmarks, int numLandmarks = 49, bool showLandmark = true);
+		
+		Mat detect();
 	private:
 		MBLBPCascade * faceCascade;
 		CvHaarClassifierCascade* HaarCascade;

@@ -10,7 +10,7 @@ int main(){
 	
 	//test 1, detect landmarks, save to tmp/face1.jpg
 	cout<<"--------------test 1--------------"<<endl;
-	string img1= "./data/test2.jpg";
+	string img1= "./data/cat.jpg";
 	Mat face1 = detector.detect(img1);
 	imwrite( "./tmp/face1.jpg" , face1 );
 	cout<<"Image saved to ./tmp/face1.jpg"<<endl;
