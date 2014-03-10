@@ -2,8 +2,8 @@ CXX = g++
 CXXFLAGS = -Wall -g -O3
 #-std=gnu++98 -fPIC
 
-LD_FLAGS = -Llib/cv -Llib/vl -lvl -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_flann -lopencv_objdetect
-INCLUDE_FLAGS = -Iinclude/cv -Iinclude/vl -Iinclude/intraface
+LD_FLAGS = -Llib/cv  -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_flann -lopencv_objdetect
+INCLUDE_FLAGS = -Iinclude/cv -Iinclude/intraface
 INTRAFACE_LIB = lib/intraface/libintraface.a
 #LIBFLAGS = -fopenmp
 
