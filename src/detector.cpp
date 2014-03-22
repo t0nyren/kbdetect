@@ -129,7 +129,7 @@ Mat Detector::detect(const string imgname, int numLandmarks){
 	nFaces = rects->total;
 
 	if (nFaces != 1){
-		storage = cvCreateMemStorage(0);
+		//storage = cvCreateMemStorage(0);
 		cvReleaseMemStorage(&storage);
 		cvReleaseImage(&frame_bw);
 		cvReleaseImage(&frame);	
@@ -168,6 +168,9 @@ Mat Detector::detect(const string imgname, int numLandmarks){
     elapsed = (end.tv_sec - begin.tv_sec) + 
               ((end.tv_usec - begin.tv_usec)/1000000.0);
 	cout<<"Landmarks detected in "<<elapsed<<" seconds"<<endl;
+	cvReleaseMemStorage(&storage);
+	cvReleaseImage(&frame_bw);
+	cvReleaseImage(&frame);
 	return frame_mat;
 }
 
@@ -231,7 +234,6 @@ Mat Detector::detect(const string imgname, Mat& landmarks, int* pose, int numLan
 	nFaces = rects->total;
 
 	if (nFaces != 1){
-		storage = cvCreateMemStorage(0);
 		cvReleaseMemStorage(&storage);
 		cvReleaseImage(&frame_bw);
 		cvReleaseImage(&frame);	
@@ -272,6 +274,10 @@ Mat Detector::detect(const string imgname, Mat& landmarks, int* pose, int numLan
     elapsed = (end.tv_sec - begin.tv_sec) + 
               ((end.tv_usec - begin.tv_usec)/1000000.0);
 	cout<<"Landmarks detected in "<<elapsed<<" seconds"<<endl;
+	cvReleaseMemStorage(&storage);
+	cvReleaseImage(&frame_bw);
+	cvReleaseImage(&frame); 
+
 	return frame_mat;
 }
 
@@ -364,7 +370,7 @@ Mat Detector::detectNorm(string imgname){
 	nFaces = rects->total;
 
 	if (nFaces != 1){
-		storage = cvCreateMemStorage(0);
+		//storage = cvCreateMemStorage(0);
 		cvReleaseMemStorage(&storage);
 		cvReleaseImage(&frame_bw);
 		cvReleaseImage(&frame);	
@@ -475,7 +481,7 @@ Mat Detector::detectNorm(string imgname){
 	}
 	//return resized;
 	
-	storage = cvCreateMemStorage(0);
+	//storage = cvCreateMemStorage(0);
 	cvReleaseMemStorage(&storage);
 	cvReleaseImage(&frame_bw);
 	cvReleaseImage(&frame);
@@ -549,7 +555,7 @@ Mat Detector::detectNorm(const string filename, const float faceWidth, const flo
 	nFaces = rects->total;
 
 	if (nFaces != 1){
-		storage = cvCreateMemStorage(0);
+		//storage = cvCreateMemStorage(0);
 		cvReleaseMemStorage(&storage);
 		cvReleaseImage(&frame_bw);
 		cvReleaseImage(&frame);	
@@ -695,7 +701,7 @@ Mat Detector::detectNorm(const string filename, const float faceWidth, const flo
 		}
 	}
 	//clear stuff
-	storage = cvCreateMemStorage(0);
+	//storage = cvCreateMemStorage(0);
 	cvReleaseMemStorage(&storage);
 	cvReleaseImage(&frame_bw);
 	cvReleaseImage(&frame);
